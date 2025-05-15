@@ -93,9 +93,17 @@ const createRequiredDirectories = () => {
 
 // Initialize all necessary directories
 const initializeDirectories = () => {
-  ensureDirectoryExists(path.join(__dirname, '..', config.paths.temp));
-  ensureDirectoryExists(path.join(__dirname, '..', config.paths.output));
-  ensureDirectoryExists(path.join(__dirname, '..', config.paths.zip));
+  const dirs = [
+    config.paths.temp,
+    config.paths.output,
+    config.paths.zip
+  ];
+
+  dirs.forEach(dir => {
+    // Only join __dirname if dir is not absolute
+    const fullPath = path.isAbsolute(dir) ? dir : path.join(__dirname, '..', dir);
+    ensureDirectoryExists(fullPath);
+  });
 };
 
 module.exports = {
